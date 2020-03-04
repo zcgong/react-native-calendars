@@ -25,7 +25,8 @@ class CalendarHeader extends Component {
     onPressArrowRight: PropTypes.func,
     disableArrowLeft: PropTypes.bool,
     disableArrowRight: PropTypes.bool,
-    webAriaLevel: PropTypes.number
+    webAriaLevel: PropTypes.number,
+    hideHeader: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -146,18 +147,19 @@ class CalendarHeader extends Component {
     const webProps = Platform.OS === 'web' ? {'aria-level': this.props.webAriaLevel} : {};
 
     return (
-      <View 
-        style={this.props.style} 
+      <View
+        style={this.props.style}
         accessible
         accessibilityRole={'adjustable'}
         accessibilityActions={[
-          {name: 'increment', label: 'increment'}, 
+          {name: 'increment', label: 'increment'},
           {name: 'decrement', label: 'decrement'}
         ]}
         onAccessibilityAction={this.onAccessibilityAction}
         accessibilityElementsHidden={this.props.accessibilityElementsHidden} // iOS
         importantForAccessibility={this.props.importantForAccessibility} // Android
       >
+        {!this.props.hideHeader &&
         <View style={this.style.header}>
           {leftArrow}
           <View style={{flexDirection: 'row'}}>
@@ -171,10 +173,10 @@ class CalendarHeader extends Component {
             {indicator}
           </View>
           {rightArrow}
-        </View>
+        </View>}
         {!this.props.hideDayNames &&
           <View style={this.style.week}>
-            {this.props.weekNumbers && 
+            {this.props.weekNumbers &&
               <Text allowFontScaling={false} style={this.style.dayHeader}></Text>
             }
             {weekDaysNames.map((day, idx) => (
